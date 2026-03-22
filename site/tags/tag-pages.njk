@@ -1,0 +1,17 @@
+---
+layout: layouts/base.njk
+pagination:
+  data: collections.tagList
+  size: 1
+  alias: tag
+eleventyComputed:
+  title: "Posts for: #{{ tag }}"
+permalink: "/tags/{{ tag | slugify }}/index.html"
+---
+{% from "macros/post.njk" import postExcerpt %}
+{% set taggedPosts = collections.posts | postsWithTag(tag) %}
+
+<h1>Posts for: #{{ tag }}</h1>
+{% for post in taggedPosts %}
+  {{ postExcerpt(post) }}
+{% endfor %}

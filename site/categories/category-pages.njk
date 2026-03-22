@@ -1,0 +1,17 @@
+---
+layout: layouts/base.njk
+pagination:
+  data: collections.categoryList
+  size: 1
+  alias: category
+eleventyComputed:
+  title: "Posts for: {{ category }}"
+permalink: "/categories/{{ category | slugify }}/index.html"
+---
+{% from "macros/post.njk" import postExcerpt %}
+{% set categoryPosts = collections.posts | postsWithCategory(category) %}
+
+<h1>Posts for: {{ category }}</h1>
+{% for post in categoryPosts %}
+  {{ postExcerpt(post) }}
+{% endfor %}

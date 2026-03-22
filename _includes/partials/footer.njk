@@ -1,0 +1,33 @@
+<address class="socials">
+  <ul>
+    <li>
+      <a class="social-link" href="/feed/feed.xml" title="RSS feed" aria-label="RSS feed">
+        <svg role="img" aria-label="feed icon">
+          <use aria-hidden="true" href="/images/social_icons/rss.svg#icon"></use>
+        </svg>
+      </a>
+    </li>
+
+    {% for social in site.socials or [] %}
+    <li>
+      <a class="social-link" rel="me" href="{{ social.url }}" title="{{ social.name }}" aria-label="{{ social.name }}">
+        <svg role="img" aria-label="{{ social.name }} icon">
+          <use aria-hidden="true" href="/images/social_icons/{{ social.name }}.svg#icon"></use>
+        </svg>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</address>
+
+<p class="copyright">
+  {% if site.copyright and site.copyright.length %}
+    {% for line in site.copyright %}
+    <span>{{ line | replace("$YEAR", ("now" | currentYear)) | replace("$AUTHOR", site.author) | safe }}</span>
+    {% endfor %}
+  {% else %}
+    <span>© <time>{{ "now" | currentYear }}</time> {{ site.author }}</span>
+    <span>Powered by <a href="https://www.11ty.dev">Eleventy</a></span>
+    <span>Theme by <a href="https://eyalkalderon.com">ebkalderon</a></span>
+  {% endif %}
+</p>

@@ -1,0 +1,33 @@
+---
+layout: layouts/base.njk
+title: Blog
+description: Blog section of the Terminus demo website
+pagination:
+  data: collections.posts
+  size: 5
+  alias: postsPage
+permalink: "/blog/{% if pagination.pageNumber > 0 %}page/{{ pagination.pageNumber + 1 }}/{% endif %}index.html"
+---
+{% from "macros/post.njk" import postExcerpt %}
+
+<header class="content">
+  <h1>Blog</h1>
+  <p>{{ site.blogDescription }}</p>
+</header>
+
+{% for post in postsPage %}
+  {{ postExcerpt(post) }}
+{% endfor %}
+
+{% if pagination.pages and pagination.pages.length > 1 %}
+<nav class="pagination">
+  <ul>
+    {% if pagination.href.previous %}
+    <li><a rel="prev" href="{{ pagination.href.previous }}" aria-label="newer posts">&lt;&nbsp;[newer posts]</a></li>
+    {% endif %}
+    {% if pagination.href.next %}
+    <li><a rel="next" href="{{ pagination.href.next }}" aria-label="older posts">[older posts]&nbsp;&gt;</a></li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}

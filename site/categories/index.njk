@@ -1,0 +1,18 @@
+---
+layout: layouts/base.njk
+title: Categories
+permalink: /categories/
+---
+<h1>Categories</h1>
+
+{% set numTerms = collections.categoryList | length %}
+<ul class="taxonomy-list{% if numTerms > 16 %} three-column{% elif numTerms > 8 %} two-column{% endif %}">
+  {% for category in collections.categoryList %}
+  {% set categoryPosts = collections.posts | postsWithCategory(category) %}
+  {% set pageCount = categoryPosts | length %}
+  <li>
+    <a href="/categories/{{ category | slugify }}/">{{ category }}</a>
+    ({{ pageCount }} {{ "post" if pageCount == 1 else "posts" }})
+  </li>
+  {% endfor %}
+</ul>

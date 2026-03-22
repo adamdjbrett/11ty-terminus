@@ -1,0 +1,8 @@
+<div class="header-container">
+  <span class="header-logo-container">
+    {% include "partials/logo.njk" %}
+  </span>
+</div>
+{% if site.mainMenu and site.mainMenu.length %}
+{% include "partials/menu.njk" %}
+{% endif %}

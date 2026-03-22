@@ -1,0 +1,30 @@
+---
+layout: layouts/base.njk
+---
+<header class="content framed">
+  <h1>Hello there! 👋🏼</h1>
+  <p>Welcome to a demo of <code>terminus</code>, a minimal dark theme for static sites.</p>
+  <p>This port preserves the original design direction and content model using Eleventy.</p>
+  <ul>
+    <li><a href="https://github.com/panr/hugo-theme-terminal">panr/hugo-theme-terminal</a></li>
+    <li><a href="https://github.com/ejmg/zerm">ejmg/zerm</a></li>
+    <li><a href="https://github.com/welpo/tabi">welpo/tabi</a></li>
+  </ul>
+</header>
+
+{% from "macros/post.njk" import postExcerpt %}
+{% set maxPosts = site.homeMaxPosts or 3 %}
+
+{% for post in collections.posts %}
+  {% if loop.index <= maxPosts %}
+    {{ postExcerpt(post) }}
+  {% endif %}
+{% endfor %}
+
+{% if (collections.posts | length) > maxPosts %}
+<nav class="pagination">
+  <ul>
+    <li><a href="/blog/" aria-label="all posts">[all posts]&nbsp;&gt;</a></li>
+  </ul>
+</nav>
+{% endif %}

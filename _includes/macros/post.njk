@@ -1,0 +1,64 @@
+{% macro postHeader(post, heading="h2", isExcerpt=true) %}
+<header>
+  <{{ heading }} class="post-title">
+    <a href="{{ post.url }}">{{ post.data.title }}</a>
+  </{{ heading }}>
+
+  {% set words = post.templateContent | wordCount %}
+  {% set minutes = words | readingMinutes %}
+  {% set wordLabel = words ~ " words" if words != 1 else "1 word" %}
+  {% set readingLabel = "<1 min" if minutes < 1 else minutes ~ " min" %}
+
+  <ul class="post-meta">
+    {% if post.data.draft %}
+    <li class="draft-label">DRAFT</li>
+    {% endif %}
+
+    <li title="Published on {{ post.date | htmlDateString }}{% if post.data.updated %}, last updated {{ post.data.updated | htmlDateString }}{% endif %}">
+      <time datetime="{{ post.date | htmlDateString }}">{{ post.date | dotDate }}</time>
+      {% if post.data.updated %}&nbsp;[Updated: <time datetime="{{ post.data.updated | htmlDateString }}">{{ post.data.updated | dotDate }}</time>]{% endif %}
+    </li>
+
+    {% if post.data.authors and post.data.authors.length %}
+    <li role="separator" aria-hidden="true">::</li>
+    <li title="Authors">{{ post.data.authors | join(", ") }}</li>
+    {% elif site.author and (site.showDefaultAuthor is not defined or site.showDefaultAuthor) %}
+    <li role="separator" aria-hidden="true">::</li>
+    <li title="Author">{{ site.author }}</li>
+    {% endif %}
+
+    <li role="separator" aria-hidden="true">::</li>
+    <li title="{{ wordLabel }}"><time datetime="PT{{ minutes }}M">{{ readingLabel }}</time> read</li>
+  </ul>
+
+  {% set categories = post.data.categories or [] %}
+  {% set tags = post.data.tags or [] %}
+  {% if categories.length or tags.length %}
+  <div class="post-tags">
+    {% for category in categories %}
+    <span>&lbrace;<a {% if not isExcerpt %}rel="tag" {% endif %}href="/categories/{{ category | slugify }}/">{{ category }}</a>&rbrace;</span>
+    {% endfor %}
+
+    {% if categories.length and tags.length %}
+    <span role="separator">::</span>
+    {% endif %}
+
+    {% for tag in tags %}
+    <span>#<a {% if not isExcerpt %}rel="tag" {% endif %}href="/tags/{{ tag | slugify }}/">{{ tag }}</a></span>
+    {% endfor %}
+  </div>
+  {% endif %}
+</header>
+{% endmacro %}
+
+{% macro postExcerpt(post) %}
+<article class="post">
+  {{ postHeader(post, "h2", true) }}
+
+  {% if post.data.description %}
+  <p>{{ post.data.description }}</p>
+  {% endif %}
+
+  <a class="read-more" href="{{ post.url }}" aria-label="Read more about {{ post.data.title }}">read more →</a>
+</article>
+{% endmacro %}

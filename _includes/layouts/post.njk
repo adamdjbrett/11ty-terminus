@@ -1,0 +1,84 @@
+---
+layout: layouts/base.njk
+---
+<article class="post content">
+  {% set words = content | wordCount %}
+  {% set minutes = words | readingMinutes %}
+  {% set wordLabel = words ~ " words" if words != 1 else "1 word" %}
+  {% set readingLabel = "<1 min" if minutes < 1 else minutes ~ " min" %}
+
+  <header>
+    <h1 class="post-title">
+      <a href="{{ page.url }}">{{ title }}</a>
+    </h1>
+
+    <ul class="post-meta">
+      {% if draft %}
+      <li class="draft-label">DRAFT</li>
+      {% endif %}
+
+      <li title="Published on {{ date | htmlDateString }}{% if updated %}, last updated {{ updated | htmlDateString }}{% endif %}">
+        <time datetime="{{ date | htmlDateString }}">{{ date | dotDate }}</time>
+        {% if updated %}&nbsp;[Updated: <time datetime="{{ updated | htmlDateString }}">{{ updated | dotDate }}</time>]{% endif %}
+      </li>
+
+      {% if authors and authors.length %}
+      <li role="separator" aria-hidden="true">::</li>
+      <li title="Authors">{{ authors | join(", ") }}</li>
+      {% elif site.author and (site.showDefaultAuthor is not defined or site.showDefaultAuthor) %}
+      <li role="separator" aria-hidden="true">::</li>
+      <li title="Author">{{ site.author }}</li>
+      {% endif %}
+
+      <li role="separator" aria-hidden="true">::</li>
+      <li title="{{ wordLabel }}"><time datetime="PT{{ minutes }}M">{{ readingLabel }}</time> read</li>
+    </ul>
+
+    {% set categories = categories or [] %}
+    {% set tags = tags or [] %}
+    {% if categories.length or tags.length %}
+    <div class="post-tags">
+      {% for category in categories %}
+      <span>&lbrace;<a rel="tag" href="/categories/{{ category | slugify }}/">{{ category }}</a>&rbrace;</span>
+      {% endfor %}
+
+      {% if categories.length and tags.length %}
+      <span role="separator">::</span>
+      {% endif %}
+
+      {% for tag in tags %}
+      <span>#<a rel="tag" href="/tags/{{ tag | slugify }}/">{{ tag }}</a></span>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </header>
+
+  {{ content | safe }}
+</article>
+
+{% set adjacent = collections.posts | adjacentPosts(page.url) %}
+{% if adjacent.newer or adjacent.older %}
+<nav class="post-navigation">
+  <header class="post-navigation-title">
+    <h2>Read More Posts</h2>
+    <hr>
+  </header>
+  <div class="post-navigation-buttons">
+    {% if adjacent.older %}
+    <a rel="next" href="{{ adjacent.older.url }}" aria-label="Next article">
+      <span aria-hidden="true">&lt;&nbsp;[</span>{{ adjacent.older.data.title }}<span aria-hidden="true">]</span>
+    </a>
+    {% endif %}
+
+    {% if adjacent.older and adjacent.newer %}
+    <span aria-hidden="true" role="separator">::</span>
+    {% endif %}
+
+    {% if adjacent.newer %}
+    <a rel="prev" href="{{ adjacent.newer.url }}" aria-label="Prev article">
+      <span aria-hidden="true">[</span>{{ adjacent.newer.data.title }}<span aria-hidden="true">]&nbsp;&gt;</span>
+    </a>
+    {% endif %}
+  </div>
+</nav>
+{% endif %}
