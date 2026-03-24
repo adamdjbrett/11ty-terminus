@@ -3,3 +3,4 @@ _site/
 .cache/
 public/
 static/processed_images/
+.DS_Store

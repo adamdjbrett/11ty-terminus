@@ -18,10 +18,28 @@ Eleventy `3.1.5` port of the original Terminus Zola theme.
 ## Commands
 
 ```bash
-npm install
+npm ci
 npm run start
 npm run build
 ```
+
+`npm run build` is the CI/deploy build command. It outputs the site to `_site/` and generates Pagefind search files at `_site/pagefind/`.
+
+## Deployment
+
+This repository deploys with GitHub Actions + GitHub Pages:
+
+1. `npm ci`
+2. `npm run build`
+3. Upload `_site` as the Pages artifact
+4. Deploy via `actions/deploy-pages`
+
+Workflow file: `.github/workflows/zola.yml` (Eleventy-based despite filename).
+
+## Notes
+
+- KaTeX assets and math rendering are kept for existing math posts (for example `site/posts/2025-12-23-math-typesetting.md`).
+- `scripts/build-css.mjs` remains in place. Sass currently emits deprecation warnings (`to-upper-case`); migrate to `string.to-upper-case` in a follow-up to avoid future breakage.
 
 ## Routes
 
