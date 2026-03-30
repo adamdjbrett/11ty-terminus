@@ -1,6 +1,5 @@
 node_modules/
 _site/
 .cache/
-public/
-static/processed_images/
+public/processed_images/
 .DS_Store

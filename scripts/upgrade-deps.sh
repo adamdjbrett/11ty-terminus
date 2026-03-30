@@ -2,14 +2,14 @@
 
 #
 # Executes whenever a new version of KaTeX is released, updating the embedded
-# assets in `static/{css,fonts,js}/` accordingly.
+# assets in `public/{css,fonts,js}/` accordingly.
 #
 
 set -euo pipefail
 
-readonly KATEX_MIN_CSS_PATH='static/css/katex.min.css'
-readonly KATEX_MIN_JS_PATH='static/js/katex.min.js'
-readonly KATEX_FONTS_PATH='static/fonts/katex/'
+readonly KATEX_MIN_CSS_PATH='public/css/katex.min.css'
+readonly KATEX_MIN_JS_PATH='public/js/katex.min.js'
+readonly KATEX_FONTS_PATH='public/fonts/katex/'
 
 for dependency in curl grep jq tar; do
     command -v "${dependency}" > /dev/null

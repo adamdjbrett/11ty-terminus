@@ -38,7 +38,8 @@ Workflow file: `.github/workflows/zola.yml` (Eleventy-based despite filename).
 
 ## Notes
 
-- KaTeX assets and math rendering are kept for existing math posts (for example `site/posts/2025-12-23-math-typesetting.md`).
+- Project structure now follows a standard Eleventy pattern: content in `content/`, passthrough assets in `public/`, shared templates in `_includes/`, and global data in `_data/`.
+- KaTeX assets and math rendering are kept for existing math posts (for example `content/posts/2025-12-23-math-typesetting.md`).
 - `scripts/build-css.mjs` remains in place. Sass currently emits deprecation warnings (`to-upper-case`); migrate to `string.to-upper-case` in a follow-up to avoid future breakage.
 
 ## Routes
