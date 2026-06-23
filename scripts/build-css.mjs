@@ -1,6 +1,5 @@
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 import { compile } from "sass";
 
 const cwd = process.cwd();
@@ -36,7 +35,7 @@ if (!files.length) {
 let failed = 0;
 for (const src of files) {
   const rel = path.relative(sassRoot, src);
-  const out = path.join(cwd, "static", rel).replace(/\.(scss|sass)$/i, ".css");
+  const out = path.join(cwd, "public", rel).replace(/\.(scss|sass)$/i, ".css");
   fs.mkdirSync(path.dirname(out), { recursive: true });
   try {
     const result = compile(src, {

@@ -16,7 +16,7 @@ const stripHtml = (value) =>
 
 export default function(eleventyConfig) {
   eleventyConfig.addPlugin(pluginRss);
-  eleventyConfig.addPassthroughCopy({ static: "/" });
+  eleventyConfig.addPassthroughCopy({ "./public/": "/" });
 
   eleventyConfig.addFilter("readableDate", (value, format = "dd LLL yyyy") => {
     const date = toDate(value);
@@ -92,14 +92,14 @@ export default function(eleventyConfig) {
 
   eleventyConfig.addCollection("posts", (collectionApi) =>
     collectionApi
-      .getFilteredByGlob("site/posts/*.{md,njk,html}")
+      .getFilteredByGlob("content/posts/*.{md,njk,html}")
       .filter((item) => item.data.draft !== true)
       .sort((a, b) => b.date - a.date)
   );
 
   eleventyConfig.addCollection("tagList", (collectionApi) => {
     const tags = new Set();
-    for (const item of collectionApi.getFilteredByGlob("site/posts/*.{md,njk,html}")) {
+    for (const item of collectionApi.getFilteredByGlob("content/posts/*.{md,njk,html}")) {
       for (const tag of item.data.tags || []) {
         if (["all", "posts"].includes(tag)) continue;
         tags.add(tag);
@@ -110,7 +110,7 @@ export default function(eleventyConfig) {
 
   eleventyConfig.addCollection("categoryList", (collectionApi) => {
     const categories = new Set();
-    for (const item of collectionApi.getFilteredByGlob("site/posts/*.{md,njk,html}")) {
+    for (const item of collectionApi.getFilteredByGlob("content/posts/*.{md,njk,html}")) {
       for (const category of item.data.categories || []) {
         categories.add(category);
       }
@@ -123,6 +123,6 @@ export default function(eleventyConfig) {
     htmlTemplateEngine: "njk",
     dataTemplateEngine: "njk",
     templateFormats: ["md", "njk", "html"],
-    dir: { input: "site", includes: "../_includes", data: "../_data", output: "_site" }
+    dir: { input: "content", includes: "../_includes", data: "../_data", output: "_site" }
   };
 }
